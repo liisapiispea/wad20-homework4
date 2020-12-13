@@ -103,4 +103,32 @@ describe('Posts', () => {
     it('1 == 1', function () {
         expect(true).toBe(true)
     });
+
+    it('renders the correct amount of posts', function () {
+        const allPosts = wrapper.findAll('.post');
+        expect(allPosts.length).toEqual(testData.length);
+    })
+
+    //if post has media property, image or video tags are rendered depending on media.type property, or if media property is absent nothing is rendered.
+    it('renders depending on media type', function () {   
+        const mediaPost = wrapper.findAll('.post-image');
+        const imgType = testData.filter(item => item.media === 'image');
+        const vidType = testData.filter(item => item.media === 'video')
+        const img = mediaPost.filter(wrapper => wrapper.element ==='img');
+        const video = mediaPost.filter(wrapper => wrapper.element ==='video');
+
+        expect(imgType.length).toEqual(img.length);
+        expect(vidType.length).toEqual(video.length);
+    })
+
+
+   it('no media is rendered if media property is absent', function() {
+        const mediaPost = wrapper.findAll('.post-image');
+        const allPosts = wrapper.findAll('.post');
+        const noMedia = testData.filter(item => item.media === null);
+
+        expect(allPosts.length - mediaPost.length).toEqual(noMedia.length);
+   })
+
+
 });
